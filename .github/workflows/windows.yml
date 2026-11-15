@@ -1,0 +1,66 @@
+name: Build Windows
+
+# Builds the APEX Windows installers on a GitHub-hosted Windows runner, so
+# nothing has to be installed on the development laptop. Run it from the
+# Actions tab, or let it run on every push to main.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'backup/**'
+      - '**/*.md'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install the Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # Caches the compiled Rust dependencies, so later runs finish in a
+      # couple of minutes instead of fifteen.
+      - name: Cache Rust build output
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install the Tauri CLI
+        run: cargo install tauri-cli --version "^2.0.0" --locked
+
+      - name: Build APEX
+        run: cargo tauri build
+        env:
+          # No code-signing certificate is configured. The installers work,
+          # but Windows SmartScreen will warn on first run. See docs/BUILD.md.
+          TAURI_SIGNING_PRIVATE_KEY: ''
+
+      - name: Upload the MSI installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: APEX-Windows-MSI
+          path: src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload the NSIS setup executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: APEX-Windows-Setup
+          path: src-tauri/target/release/bundle/nsis/*-setup.exe
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload the portable executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: APEX-Windows-Portable
+          path: src-tauri/target/release/APEX.exe
+          if-no-files-found: error
+          retention-days: 90
