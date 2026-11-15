@@ -1,0 +1,176 @@
+/* ==========================================
+   APEX 5.0 — MOBILE AND NATIVE SHELL ADAPTATION
+   Loaded last, so it overrides only what needs to change. The desktop
+   layout is untouched above 760px.
+
+   Covers two things the browser build never had to handle:
+     1. iOS safe areas (notch, home indicator) in the Tauri WKWebView.
+     2. Touch ergonomics — 44px targets, no accidental text selection,
+        no double-tap zoom, one-handed reach for primary controls.
+   ========================================== */
+
+/* --- Native shell behaviour (applies on every platform) --- */
+html{ -webkit-text-size-adjust:100%; }
+body{
+  /* Keep content clear of the notch and the home indicator. Zero on desktop. */
+  padding-left:max(5%, env(safe-area-inset-left));
+  padding-right:max(5%, env(safe-area-inset-right));
+  padding-top:env(safe-area-inset-top);
+  -webkit-font-smoothing:antialiased;
+}
+/* In a native window the page is the app: no rubber-banding, no text cursor
+   on chrome, no callout menus on long-press. Inputs stay fully selectable. */
+body.apex-native{
+  overscroll-behavior:none;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+body.apex-native input,
+body.apex-native textarea,
+body.apex-native select,
+body.apex-native .record-notes,
+body.apex-native .st-panel-text,
+body.apex-native blockquote{
+  -webkit-user-select:text;
+  user-select:text;
+}
+/* iOS zooms the viewport whenever a focused input is under 16px. */
+body.apex-native input,
+body.apex-native select,
+body.apex-native textarea{ font-size:16px; }
+
+/* --- Touch ergonomics --- */
+@media (pointer:coarse){
+  button,
+  .module-button,
+  .home-return,
+  .file-import,
+  label.cal-check,
+  .hcell{ min-height:44px; }
+  button{ padding:13px 18px; }
+  #taskList li input[type=checkbox],
+  .habit-check{ width:24px; height:24px; }
+  #taskList li{ padding:15px 4px; }
+  #taskList li button{ padding:9px 13px; }
+  .record-delete{ padding:10px 13px; }
+  .wheel-option{ height:44px; }
+  /* Stop the browser waiting 300ms to see if a tap is a double-tap. */
+  button, .module-button, .hcell, .st-stand, .seg button,
+  .fit-tabs button, .cal-event{ touch-action:manipulation; }
+}
+
+/* --- Phone layout --- */
+@media (max-width:760px){
+  body{ padding-bottom:calc(28px + env(safe-area-inset-bottom)); }
+
+  header{ min-height:auto; padding:14px 0 12px; flex-wrap:wrap; gap:10px; }
+  header h1{ font-size:32px; letter-spacing:3px; }
+  header p{ font-size:9px; margin-top:5px; }
+  .header-right{ display:flex; align-items:center; gap:9px; }
+
+  main{ padding-bottom:40px; }
+  .page-view{ padding-top:14px; }
+  .page-heading h2, .home-intro h2{ font-size:clamp(28px,8vw,36px); }
+
+  /* One column everywhere */
+  .module-grid,
+  .dashboard,
+  .analytics-grid,
+  .stats-grid,
+  .cal-layout,
+  .cal-bottom,
+  .hab-grid,
+  .two-col,
+  .xp-two-col,
+  .xp-rates{ grid-template-columns:1fr !important; }
+
+  .card{ padding:16px; }
+  .section{ margin-top:34px; }
+
+  /* The home return button is the main navigation on a phone, so it sits
+     within thumb reach and stays put while the page scrolls. */
+  .home-return{
+    position:sticky; top:env(safe-area-inset-top); z-index:30;
+    width:100%; justify-content:center; margin:0 0 14px;
+    padding:13px; font-size:11px;
+    background:#172235e8; backdrop-filter:blur(8px);
+  }
+
+  /* Forms stack and fill the width */
+  .study-form, .hab-form, .fit-form, .cal-form{ grid-template-columns:1fr; }
+  .study-form label, .hab-form label{ margin-bottom:-6px; }
+  .study-form #addStudyButton, .hab-form button[type=submit]{ grid-column:1; width:100%; }
+  .fit-field{ width:100%; }
+  input, select, textarea{ width:100%; }
+
+  /* Wide content scrolls inside its own box rather than the page body */
+  .hab-table-wrap,
+  .cal-scroller,
+  .fit-tabs,
+  .seg,
+  .garage-views,
+  .garage-parts{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .fit-tabs, .seg{ flex-wrap:nowrap; }
+  .fit-tabs button, .seg button{ flex:0 0 auto; white-space:nowrap; }
+  .hab-table th, .hab-table td{ padding:7px 4px; }
+
+  /* Home: tiles become a comfortable single-column list */
+  .module-button{ min-height:84px; padding:15px; gap:13px; }
+  .module-copy strong{ font-size:21px; }
+  .module-copy small{ font-size:10px; }
+  .home-top{ gap:12px; }
+
+  /* Timer stays legible without dominating the screen */
+  .timer-display{ font-size:clamp(38px,13vw,52px); }
+  .wheel{ height:132px; width:58px; }
+
+  .toast-host{ left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); }
+  .toast{ width:auto; max-width:none; }
+}
+
+/* --- Small phones --- */
+@media (max-width:400px){
+  body{ padding-left:max(14px, env(safe-area-inset-left));
+        padding-right:max(14px, env(safe-area-inset-right)); }
+  .card{ padding:14px; }
+  .st-facts{ grid-template-columns:1fr 1fr; }
+  .garage-stage{ min-height:200px; }
+}
+
+/* --- Landscape phone: reclaim vertical space --- */
+@media (max-height:480px) and (orientation:landscape){
+  header{ min-height:auto; padding:8px 0; }
+  header h1{ font-size:24px; }
+  .section{ margin-top:22px; }
+  .home-return{ position:static; }
+}
+
+/* --- Desktop window: use the width properly --- */
+@media (min-width:1600px){
+  main{ max-width:1680px; }
+  .module-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+
+/* --- Respect the system reduced-motion setting --- */
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+/* --- Touch target widths ---
+   Found by docs/tests/test_platform.py: the row delete buttons were tall
+   enough but only ~19px wide, which is awkward to hit with a thumb. */
+@media (pointer:coarse){
+  #taskList li button,
+  .record-delete,
+  .toast-x,
+  .habit-actions button{ min-width:44px; }
+  /* The checkbox stays visually small, but its whole row is a target: the
+     task label toggles the same state, and the row is comfortably over 44px. */
+  #taskList li input[type=checkbox]{ width:26px; height:26px; margin:0 4px; }
+}

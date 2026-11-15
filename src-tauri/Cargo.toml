@@ -1,0 +1,28 @@
+[package]
+name = "apex"
+version = "5.0.0"
+description = "APEX Command Centre"
+authors = ["APEX"]
+edition = "2021"
+rust-version = "1.77.2"
+
+# The library target is what the iOS and Android shells link against.
+# Desktop uses it too, so there is one code path for every platform.
+[lib]
+name = "apex_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+# Smaller, faster release binaries. APEX ships no heavy Rust logic, so the
+# whole app stays in the low tens of megabytes.
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <meta content="#090d16" name="theme-color"/>
+  <title>
+   APEX v5.0 | Command Centre
+  </title>
+  <link href="style.css" rel="stylesheet"/>
+  <link href="stadium.css" rel="stylesheet"/>
+  <link href="mobile.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header>
+   <div>
+    <h1>
+     APEX
+    </h1>
+    <p>
+     STUDY COMMAND CENTRE
+    </p>
+   </div>
+   <div class="header-right">
+    <span class="version-tag">v5.0</span>
+    <div class="system-status">
+     ● SYSTEM ONLINE
+    </div>
+   </div>
+  </header>
+  <main>
+
+   <section class="page-view active-page" data-page-section="home" id="homePage">
+    <div class="home-top">
+<div class="home-intro">
+     <h2>
+      Welcome back.
+     </h2>
+     <p class="subtitle">
+      Choose your next move.
+     </p>
+     <p class="home-next" id="homeNext" hidden></p>
+    </div>
+<button class="watch-slot empty" id="watchSlot" type="button" aria-label="Add a watch dial"></button>
+</div>
+    <section aria-label="Your progression" class="card xp-strip" id="xpHomeStrip"></section>
+    <section aria-label="Daily quote" class="quote-card card">
+     <div class="quote-topline">
+      <h3>
+       DAILY BRIEFING
+      </h3>
+      <span id="quoteDate">
+      </span>
+     </div>
+     <blockquote id="dailyQuote">
+      Import your quote library to begin.
+     </blockquote>
+     <p class="quote-author" id="quoteAuthor">
+      APEX QUOTES
+     </p>
+     <div class="quote-controls">
+      <label class="file-import" for="quoteFile">
+       IMPORT / UPDATE QUOTES.TXT
+      </label>
+      <input accept=".txt,text/plain" hidden="" id="quoteFile" type="file"/>
+      <span id="quoteMessage" role="status">
+       One quote. One day.
+      </span>
+     </div>
+    </section>
+    <div class="module-grid">
+     <button class="module-button module-blue" data-open-page="study" type="button">
+      <span aria-hidden="true" class="module-icon">
+       ▤
+      </span>
+      <span class="module-copy">
+       <strong>
+        STUDY
+       </strong>
+       <small>
+        Focus timer, logger and analytics
+       </small>
+      </span>
+      <span aria-hidden="true" class="module-arrow">
+       ↗
+      </span>
+     </button>
+     
+     <button class="module-button module-red" data-open-page="tasks" type="button">
+      <span aria-hidden="true" class="module-icon">
+       ☷
+      </span>
+      <span class="module-copy">
+       <strong>
+        TASKS
+       </strong>
+       <small>
+        Plan and complete today’s work
+       </small>
+      </span>
+      <span aria-hidden="true" class="module-arrow">
+       ↗
+      </span>
+     </button>
+     <button class="module-button module-cyan" data-open-page="fitness" type="button">
+      <span aria-hidden="true" class="module-icon">⌁</span>
+      <span class="module-copy"><strong>FITNESS</strong><small>Strength, endurance, football and sports</small></span>
+      <span aria-hidden="true" class="module-arrow">↗</span>
+     </button>
+     <button class="module-button module-purple" data-open-page="calendar" type="button">
+      <span aria-hidden="true" class="module-icon">▦</span>
+      <span class="module-copy"><strong>CALENDAR</strong><small>Day planner, schedule and reminders</small></span>
+      <span aria-hidden="true" class="module-arrow">↗</span>
+     </button>
+     <button class="module-button module-green" data-open-page="habits" type="button">
+      <span aria-hidden="true" class="module-icon">
+       ⌁
+      </span>
+      <span class="module-copy">
+       <strong>
+        HABITS
+       </strong>
+       <small>
+        Weekly habit tracker and analytics
+       </small>
+      </span>
+      <span aria-hidden="true" class="module-arrow">
+       ↗
+      </span>
+     </button>
+     <button class="module-button module-amber" data-open-page="progression" type="button">
+      <span aria-hidden="true" class="module-icon">◆</span>
+      <span class="module-copy"><strong>PROGRESSION</strong><small>Level, XP and transaction history</small></span>
+      <span aria-hidden="true" class="module-arrow">↗</span>
+     </button>
+     <button class="module-button module-stadium" data-open-page="stadium" type="button">
+      <span aria-hidden="true" id="stadiumHomeCard"></span>
+      <span class="module-copy"><strong>EMIRATES</strong><small>Interactive stadium, stand by stand</small></span>
+      <span aria-hidden="true" class="module-arrow">↗</span>
+     </button>
+    </div>
+    <section aria-label="Car viewer" class="card garage-card">
+     <div class="garage-top">
+      <div>
+       <h3>APEX GARAGE</h3>
+       <p class="garage-sub" id="garageAngle">DRAG TO ROTATE · SCROLL TO ZOOM</p>
+      </div>
+      <div class="garage-tools">
+       <button class="secondary on" id="garageSpin" type="button">AUTO-SPIN</button>
+       <button class="secondary" id="garageBlueprint" type="button">BLUEPRINT</button>
+      </div>
+     </div>
+     <div class="garage-stage">
+      <canvas id="garageCanvas"></canvas>
+     </div>
+     <div class="garage-views" id="garageViews"></div>
+     <div class="garage-parts" id="garageParts"></div>
+     <p class="garage-caption" id="garageCaption">Drag the car to look all the way around it.</p>
+    </section>
+   </section>
+   <section class="page-view" data-page-section="tasks" id="tasksPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading">
+     <h2>
+      TASK CONTROL
+     </h2>
+     <p class="subtitle">
+      Your daily execution list.
+     </p>
+    </div>
+    <div class="dashboard single-module">
+     <div class="card">
+      <h3>
+       TODAY'S TASKS
+      </h3>
+      <div class="task-entry">
+       <input id="taskInput" placeholder="Enter a task..."/>
+       <button id="addTaskButton" type="button">
+        +
+       </button>
+      </div>
+      <ul id="taskList">
+      </ul>
+     </div>
+     <div class="card task-progress-card">
+      <h3>TASK COMPLETION</h3>
+      <div class="progress-number" id="progressNumber">0%</div>
+      <div class="progress-track"><div id="taskProgress"></div></div>
+      <p id="progressText">0 of 0 tasks completed</p>
+     </div>
+    </div>
+   </section>
+   
+   <section class="page-view" data-page-section="habits" id="habitsPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading"><h2>APEX LIFE</h2><p class="subtitle">Weekly habit system. Track the work, not your worth.</p></div>
+    <div class="card"><h3>WEEKLY HABIT TRACKER</h3><div id="habWeek"></div></div>
+    <div class="card"><h3>ADD A HABIT</h3>
+     <form class="hab-form" id="habitForm">
+      <label for="habitName">HABIT NAME<input id="habitName" maxlength="60" placeholder="e.g. Read for 20 minutes" required></label>
+      <label for="habitDescription">DESCRIPTION (OPTIONAL)<input id="habitDescription" maxlength="140" placeholder="What does completing it mean?"></label>
+      <label for="habitCategory">CATEGORY<select id="habitCategory"><option>Discipline</option><option>Physical</option><option>Mental</option><option>Character</option><option>Other</option></select></label>
+      <button type="submit">ADD HABIT</button>
+      <p class="form-message" id="habitFormMessage" role="status"></p>
+     </form></div>
+    <div class="card"><h3>MANAGE HABITS</h3><div id="habList"></div></div>
+    <div id="habAnalytics"></div>
+   </section>
+   <section class="page-view" data-page-section="fitness" id="fitnessPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading"><h2>FITNESS & PERFORMANCE</h2><p class="subtitle">Strength. Endurance. Football. Other sports. Rest.</p></div>
+    <div id="fitRoot"></div>
+   </section>
+   <section class="page-view" data-page-section="calendar" id="calendarPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading">
+     <h2>DAY PLANNER</h2>
+     <p class="subtitle">Your schedule, hour by hour. APEX alerts you when an event is due.</p>
+    </div>
+    <div class="cal-layout">
+     <div class="card cal-main">
+      <div class="cal-toolbar" id="calToolbar"></div>
+      <div class="cal-scroller" id="calGrid"></div>
+     </div>
+     <aside class="cal-side">
+      <div class="card">
+       <h3 id="eventFormTitle">ADD AN EVENT</h3>
+       <form class="cal-form" id="eventForm">
+        <label for="evTitle">TITLE<input id="evTitle" maxlength="80" placeholder="e.g. Physics tuition" required/></label>
+        <label for="evDate">DATE<input id="evDate" required type="date"/></label>
+        <div class="cal-two">
+         <label for="evStart">START<input id="evStart" required type="time"/></label>
+         <label for="evEnd">END<input id="evEnd" type="time"/></label>
+        </div>
+        <label for="evCategory">CATEGORY<select id="evCategory">
+         <option value="study">Study</option>
+         <option value="class">Class / School</option>
+         <option value="fitness">Fitness</option>
+         <option value="exam">Exam / Deadline</option>
+         <option value="personal">Personal</option>
+         <option value="other">Other</option>
+        </select></label>
+        <label for="evRemind">REMIND ME<select id="evRemind">
+         <option value="0">At start time</option>
+         <option value="5">5 minutes before</option>
+         <option selected value="10">10 minutes before</option>
+         <option value="15">15 minutes before</option>
+         <option value="30">30 minutes before</option>
+         <option value="60">1 hour before</option>
+        </select></label>
+        <label for="evNotes">NOTES (OPTIONAL)<textarea id="evNotes" maxlength="200" placeholder="Location, chapter, who with..." rows="2"></textarea></label>
+        <div class="cal-form-actions">
+         <button id="evSave" type="submit">ADD EVENT</button>
+         <button class="secondary" hidden id="evCancel" type="button">CANCEL EDIT</button>
+         <button class="record-delete" hidden id="evDelete" type="button">DELETE</button>
+        </div>
+        <p class="form-message" id="evMsg" role="status"></p>
+       </form>
+      </div>
+     </aside>
+    </div>
+    <div class="cal-bottom">
+     <div class="card">
+      <h3>JUMP TO A DATE</h3>
+      <div id="calMini"></div>
+     </div>
+     <div class="card">
+      <h3>ALERTS</h3>
+      <p class="muted-small" id="notifStatus">Checking notification support...</p>
+      <div class="cal-alert-actions">
+       <button class="secondary" id="notifEnable" type="button">ENABLE NOTIFICATIONS</button>
+       <button class="secondary" id="notifTest" type="button">SEND TEST</button>
+      </div>
+      <label class="cal-check" for="notifSound"><input checked id="notifSound" type="checkbox"/> Play an alert sound</label>
+      <p class="muted-small">Keep this tab open to receive alerts.</p>
+     </div>
+     <div class="card">
+      <h3>UPCOMING</h3>
+      <div id="calUpcoming"></div>
+     </div>
+    </div>
+   </section>
+   <section class="page-view" data-page-section="stadium" id="stadiumPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading">
+     <h2>EMIRATES STADIUM</h2>
+     <p class="subtitle">Four stands and a pitch. Select any section to read about it.</p>
+    </div>
+    <div id="stadiumRoot"></div>
+   </section>
+   <section class="page-view" data-page-section="progression" id="progressionPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading">
+     <h2>PROGRESSION</h2>
+     <p class="subtitle">Experience earned across every APEX module. Effort in, level up.</p>
+    </div>
+    <div id="xpRoot"></div>
+   </section>
+   <section class="page-view" data-page-section="study" id="studyPage">
+    <button class="home-return" data-go-home type="button">← HOME</button>
+    <div class="page-heading">
+     <h2>
+      STUDY COMMAND CENTRE
+     </h2>
+     <p class="subtitle">
+      Focus. Log. Review the evidence.
+     </p>
+    </div>
+    <section class="section study-module-block study-focus">
+<h2>Focus Timer</h2>
+<p class="subtitle">Set a duration. Protect the session. The timer survives page changes and refreshes.</p>
+<div class="card timer-card">
+      <h3>
+       FOCUS TIMER
+      </h3>
+      <div id="timerPicker">
+       <p class="picker-label">
+        SET YOUR DURATION
+       </p>
+       <div class="wheel-container">
+        <div class="wheel-column">
+         <div class="wheel" id="hoursWheel">
+         </div>
+         <span>
+          HRS
+         </span>
+        </div>
+        <div class="wheel-column">
+         <div class="wheel" id="minutesWheel">
+         </div>
+         <span>
+          MIN
+         </span>
+        </div>
+        <div class="wheel-column">
+         <div class="wheel" id="secondsWheel">
+         </div>
+         <span>
+          SEC
+         </span>
+        </div>
+       </div>
+      </div>
+      <div class="ios-timer" hidden id="timerRing">
+       <svg aria-hidden="true" class="ios-ring" viewBox="0 0 120 120">
+        <circle class="ios-track" cx="60" cy="60" r="54"></circle>
+        <circle class="ios-prog" cx="60" cy="60" r="54" id="ringProgress"></circle>
+       </svg>
+       <div class="ios-face">
+        <span class="ios-time" id="ringTime">0:00</span>
+        <span class="ios-end" id="ringEnd"></span>
+       </div>
+      </div>
+      <div class="timer-display" id="timerDisplay">
+       00:45:00
+      </div>
+      <div class="timer-progress" id="timerBar">
+       <div id="timerProgress">
+       </div>
+      </div>
+      <p id="timerMessage">
+       Ready when you are.
+      </p>
+      <div class="timer-buttons">
+       <button id="startButton" type="button">
+        START
+       </button>
+       <button class="secondary" id="resetButton" type="button">
+        RESET
+       </button>
+      </div>
+      <p class="session-count">FOCUS SESSIONS: <strong id="sessionCount">0</strong></p>
+     </div>
+</section>
+<section class="section study-module-block">
+     <h2>
+      Study Logger
+     </h2>
+     <p class="subtitle">
+      Record what you actually studied.
+     </p>
+     <div class="card">
+      <div class="study-form">
+       <label for="studySubject">
+        SUBJECT
+       </label>
+       <select id="studySubject">
+        <option value="Physics">
+         Physics
+        </option>
+        <option value="Chemistry">
+         Chemistry
+        </option>
+        <option value="Biology">
+         Biology
+        </option>
+        <option value="Mathematics">
+         Mathematics
+        </option>
+        <option value="History &amp; Civics">
+         History &amp; Civics
+        </option>
+        <option value="Geography">
+         Geography
+        </option>
+        <option value="English Language">
+         English Language
+        </option>
+        <option value="English Literature">
+         English Literature
+        </option>
+        <option value="Marathi">
+         Marathi
+        </option>
+       </select>
+       <label for="studyChapter">
+        CHAPTER / TOPIC
+       </label>
+       <input id="studyChapter" placeholder="e.g. Laws of Motion"/>
+       <label for="studyDuration">
+        DURATION (MINUTES)
+       </label>
+       <input id="studyDuration" max="1440" min="1" placeholder="e.g. 75" type="number"/>
+       <label for="studyDate">
+        DATE
+       </label>
+       <input id="studyDate" type="date"/>
+       <label for="studyType">
+        STUDY TYPE
+       </label>
+       <select id="studyType">
+        <option value="Learning">
+         Learning
+        </option>
+        <option value="Revision">
+         Revision
+        </option>
+        <option value="Practice">
+         Practice
+        </option>
+        <option value="Test">
+         Test
+        </option>
+       </select>
+       <label for="studyNotes">
+        NOTES (OPTIONAL)
+       </label>
+       <textarea id="studyNotes" placeholder="What did you cover?"></textarea>
+       <label class="study-chapter-done" for="studyChapterDone">
+        <input id="studyChapterDone" type="checkbox"/>
+        <span>I finished this chapter <small>(counts once per subject and chapter)</small></span>
+       </label>
+       <button id="addStudyButton" type="button">
+        SAVE STUDY RECORD
+       </button>
+       <p id="studyMessage" role="status">
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="section study-module-block">
+     <h2>
+      Study Intelligence
+     </h2>
+     <p class="subtitle">
+      Your performance, backed by data.
+     </p>
+     <div class="stats-grid">
+      <div class="card stat-card">
+       <p>
+        TOTAL STUDY TIME
+       </p>
+       <strong id="totalStudyTime">
+        0h 0m
+       </strong>
+      </div>
+      <div class="card stat-card">
+       <p>
+        WEEKLY AVERAGE
+       </p>
+       <strong id="weeklyAverage">
+        0h 0m
+       </strong>
+      </div>
+      <div class="card stat-card">
+       <p>
+        STUDY RECORDS
+       </p>
+       <strong id="loggedSessions">
+        0
+       </strong>
+      </div>
+      <div class="card stat-card">
+       <p>
+        MOST STUDIED
+       </p>
+       <strong id="topSubject">
+        —
+       </strong>
+      </div>
+     </div>
+     <div class="analytics-grid">
+      <div class="card chart-card">
+       <h3>
+        SUBJECT COMPARISON
+       </h3>
+       <div id="subjectChart">
+       </div>
+      </div>
+      <div class="card chart-card">
+       <h3>
+        WEEKLY STUDY TREND
+       </h3>
+       <div id="weeklyChart">
+       </div>
+      </div>
+      <div class="card chart-card">
+       <h3>
+        STUDY DISTRIBUTION
+       </h3>
+       <div id="distributionChart">
+       </div>
+      </div>
+      <div class="card chart-card">
+       <h3>
+        STUDY CONSISTENCY
+       </h3>
+       <div id="heatmap">
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section study-module-block">
+     <h2>
+      Session History
+     </h2>
+     <div class="card">
+      <div id="studyRecords">
+       <p>
+        No study records yet.
+       </p>
+      </div>
+     </div>
+    </section>
+   </section>
+  </main>
+  <div aria-live="polite" class="toast-host" id="toastHost"></div>
+  <dialog id="confirmDialog" aria-labelledby="confirmTitle">
+   <h3 id="confirmTitle">DELETE HABIT?</h3>
+   <p id="confirmText"></p>
+   <div class="dlg-actions"><button class="secondary" id="confirmNo" type="button">CANCEL</button><button class="record-delete" id="confirmYes" type="button">DELETE PERMANENTLY</button></div>
+  </dialog>
+  <dialog id="watchDialog" aria-labelledby="watchTitle">
+   <h3 id="watchTitle">YOUR WATCH</h3>
+   <div class="watch-stage">
+    <div class="watch-preview" id="watchPreview"></div>
+    <div class="crop-wrap" hidden id="watchCropWrap">
+     <canvas aria-label="Dial cropping area" height="300" id="watchCanvas" width="300"></canvas>
+     <div class="crop-hands" id="cropHands"></div>
+    </div>
+   </div>
+   <div class="wtabs" id="watchTabs">
+    <button class="secondary on" data-wtab="preset" type="button">PRESET DIALS</button>
+    <button class="secondary" data-wtab="photo" type="button">YOUR PHOTO</button>
+   </div>
+   <div id="watchPresetPane">
+    <p class="watch-sublabel">CHOOSE A DIAL</p>
+    <div class="dial-grid" id="dialGrid"></div>
+   </div>
+   <div hidden id="watchPhotoPane">
+    <p class="muted-small">Upload a photo, drag the dial into the circle, then zoom to fit. Only the dial is kept — APEX draws live hands on top, so a photo without hands works best.</p>
+    <label class="file-import" for="watchFile">CHOOSE WATCH PHOTO</label><input accept="image/*" hidden id="watchFile" type="file"/>
+    <label class="zoom" for="watchZoom">ZOOM<input id="watchZoom" max="6" min="1" step="0.01" type="range" value="1"/></label>
+   </div>
+   <p class="watch-sublabel">HAND STYLE</p>
+   <div class="hand-styles" id="handStyles"></div>
+   <p class="watch-sublabel">HAND COLOUR</p>
+   <div class="swatches" id="watchColors"></div>
+   <p id="watchMsg" role="status"></p>
+   <div class="dlg-actions"><button class="record-delete" hidden id="watchRemove" type="button">REMOVE WATCH</button><button class="secondary" id="watchCancel" type="button">CANCEL</button><button id="watchSave" type="button">SAVE WATCH</button></div>
+  </dialog>
+  <script src="script.js">
+  </script>
+  <script src="xp.js">
+  </script>
+  <script src="stadium.js">
+  </script>
+  <script src="platform.js">
+  </script>
+  <script>
+   /* APEX PAGE NAVIGATION — home cards open modules; modules return only to Home */
+(() => {
+  const pages = [...document.querySelectorAll('[data-page-section]')];
+  const openers = [...document.querySelectorAll('.module-button[data-open-page]')];
+  const homeButtons = [...document.querySelectorAll('[data-go-home]')];
+  function openPage(name) {
+    const target = pages.find(page => page.dataset.pageSection === name);
+    if (!target) return;
+    pages.forEach(page => { const active = page === target; page.classList.toggle('active-page', active); page.hidden = !active; });
+    if (name === 'study') { if (typeof renderAnalytics === 'function') renderAnalytics(); if (typeof syncWheels === 'function') syncWheels(); }
+    if (name === 'habits' && typeof renderHabits === 'function') renderHabits();
+    if (name === 'calendar' && typeof renderCalendar === 'function') renderCalendar();
+    if (name === 'home') { try { carNeedsDraw = true; } catch (e) {} }
+    if (name === 'fitness' && typeof renderFitness === 'function') renderFitness();
+    if (name === 'progression' && typeof renderXPPage === 'function') renderXPPage();
+    if (name === 'stadium' && typeof renderStadium === 'function') renderStadium();
+    window.scrollTo({top:0,behavior:'auto'});
+  }
+  window.apexOpenPage = openPage;
+  openers.forEach(button => button.addEventListener('click', () => openPage(button.dataset.openPage)));
+  homeButtons.forEach(button => button.addEventListener('click', () => openPage('home')));
+  openPage('home');
+})();
+  </script>
+ </body>
+</html>

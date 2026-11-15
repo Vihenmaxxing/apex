@@ -1,0 +1,122 @@
+/* ==========================================
+   APEX 5.0 — EMIRATES STADIUM STYLES
+   Arsenal-inspired red, white and dark tones, sitting inside APEX's
+   existing dark dashboard palette. Original artwork only.
+   ========================================== */
+:root{
+  --st-red:#e03a44;
+  --st-red-deep:#9d1f28;
+  --st-red-glow:#ff5964;
+  --st-white:#f6f8fc;
+  --st-navy:#0c1422;
+  --st-steel:#38506f;
+}
+
+/* --- Home dashboard entry point --- */
+.module-stadium{border-color:#e03a4455;}
+.module-stadium .module-icon{background:#e03a4420;color:var(--st-red-glow);}
+.st-mini{width:100%;height:auto;max-height:76px;display:block;}
+.st-mini-bowl{fill:#121a28;stroke:#e03a4455;stroke-width:1.5;}
+.st-mini-inner{fill:#0d1420;stroke:#2b3a52;stroke-width:1;}
+.st-mini-pitch{fill:#1b5c33;}
+.st-mini-line{stroke:#ffffff90;stroke-width:1;fill:none;}
+#stadiumHomeCard{flex:none;width:112px;display:grid;place-items:center;}
+
+/* --- Stadium page --- */
+.st-card{border-color:#e03a4433;
+  background:radial-gradient(ellipse at 100% 0,#e03a441a,transparent 55%),linear-gradient(145deg,#172235,#101722);}
+.st-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:6px;}
+.st-top h3{margin:0 0 6px;}
+.st-top h3:before{color:var(--st-red);}
+.st-sub{margin:0;color:var(--muted);font:10px 'DM Mono',ui-monospace,'Segoe UI Mono',Consolas,monospace;letter-spacing:1.6px;}
+.st-views{margin-bottom:0;}
+
+.st-stage{margin:18px 0 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  background:#070b13;}
+.st-svg{display:block;width:100%;height:auto;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;}
+
+/* --- Interactive sections --- */
+.st-stand{cursor:pointer;outline:none;}
+.st-stand-hit{fill:transparent;stroke:none;}
+.st-stand *{transition:fill .18s ease,opacity .18s ease,stroke .18s ease;}
+
+.st-tier{stroke:#0a0f18;stroke-width:1;}
+.st-tier-0{fill:#2b3d57;}
+.st-tier-1{fill:#334b6b;}
+.st-tier-2{fill:#263853;}
+.st-seatline{stroke:#ffffff14;stroke-width:1;}
+.st-facade{fill:#0f1724;stroke:#24324a;stroke-width:1;}
+.st-facade-line{stroke:#ffffff10;stroke-width:1;}
+.st-roof{fill:url(#stRoof);stroke:#3a4a64;stroke-width:1;opacity:.94;}
+.st-truss{stroke:#52658a;stroke-width:1;opacity:.5;}
+.st-roof-lip{stroke:var(--st-red);stroke-width:2.5;opacity:.7;}
+
+.st-surround{fill:#17202e;stroke:#27334a;stroke-width:1;}
+.st-pitch{fill:url(#stGrass);}
+.st-stripe{fill:#ffffff09;}
+.st-line{fill:none;stroke:#ffffffb0;stroke-width:1.4;}
+.st-line-stroke{stroke:#ffffffb0;stroke-width:1.4;}
+.st-goal{fill:#ffffff22;stroke:#ffffffcc;stroke-width:1.2;}
+.st-markings{pointer-events:none;}
+
+/* Hover and selection: the chosen section lifts, the rest recedes */
+@media (hover:hover){
+  .st-stand:hover .st-tier{fill:var(--st-red-deep);}
+  .st-stand:hover .st-seatline{stroke:#ffffff2e;}
+  .st-stand:hover .st-pitch,.st-stand:hover .st-surround{filter:brightness(1.22);}
+  .st-stand:hover .st-plan-stand{fill:var(--st-red-deep);}
+}
+.st-stand:focus-visible .st-stand-hit{fill:#ffffff12;stroke:var(--st-red-glow);stroke-width:2;}
+.st-stand.is-selected .st-tier{fill:var(--st-red);}
+.st-stand.is-selected .st-tier-2{fill:var(--st-red-deep);}
+.st-stand.is-selected .st-seatline{stroke:#ffffff44;}
+.st-stand.is-selected .st-plan-stand{fill:var(--st-red);}
+.st-stand.is-selected .st-plan-label{fill:var(--st-white);}
+.st-stand.is-selected .st-pitch{filter:brightness(1.3) saturate(1.2);}
+.st-stand.is-selected .st-surround{stroke:var(--st-red-glow);stroke-width:2;}
+.st-svg.has-selection .st-stand:not(.is-selected){opacity:.58;}
+
+.st-compass-n{fill:#8d9bb2;font:600 15px 'DM Mono',ui-monospace,'Segoe UI Mono',Consolas,monospace;letter-spacing:2px;}
+
+/* --- Plan view --- */
+.st-plan-bowl{fill:#101826;stroke:#e03a4440;stroke-width:1.5;}
+.st-plan-stand{fill:#2b3d57;stroke:#0a0f18;stroke-width:1.5;}
+.st-plan-tier{stroke:#ffffff18;stroke-width:1;}
+.st-plan-label{fill:#c3cedf;font:600 15px 'Barlow Condensed','Arial Narrow',system-ui,sans-serif;letter-spacing:2.4px;
+  pointer-events:none;}
+.st-plan-note{fill:#8d9bb2;font:9px 'DM Mono',ui-monospace,'Segoe UI Mono',Consolas,monospace;letter-spacing:1.2px;}
+.st-tunnel{fill:var(--st-red);opacity:.85;}
+.st-dugout{fill:#ffffff40;stroke:#ffffff70;stroke-width:1;}
+
+/* --- Information panel --- */
+.st-panel{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:10px;
+  background:#0d1420;min-height:132px;}
+.st-panel-hint{margin:0 0 15px;color:var(--muted);font-size:12px;}
+.st-panel-head{display:flex;flex-direction:column;gap:5px;margin-bottom:11px;}
+.st-panel-tag{font:9px 'DM Mono',ui-monospace,'Segoe UI Mono',Consolas,monospace;letter-spacing:2px;color:var(--st-red-glow);}
+.st-panel-name{margin:0;font:800 27px/1 'Barlow Condensed','Arial Narrow',system-ui,sans-serif;letter-spacing:2px;
+  color:var(--st-white);}
+.st-panel-text{margin:0 0 15px;font-size:13px;line-height:1.6;color:#c3ccda;max-width:72ch;}
+.st-clear{margin:0;}
+.st-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.st-fact{display:flex;flex-direction:column;gap:5px;padding:11px 13px;border:1px solid var(--line);
+  border-radius:8px;background:#0a111c;}
+.st-fact small{font:9px 'DM Mono',ui-monospace,'Segoe UI Mono',Consolas,monospace;letter-spacing:1.4px;color:var(--muted);}
+.st-fact strong{font:700 17px 'Barlow Condensed','Arial Narrow',system-ui,sans-serif;letter-spacing:1px;color:var(--st-white);}
+
+@media(max-width:700px){
+  .st-top{flex-direction:column;gap:12px;}
+  .st-views{width:100%;}
+  .st-views button{flex:1;}
+  .st-facts{grid-template-columns:1fr 1fr;}
+  .st-panel{padding:15px;}
+  .st-panel-name{font-size:23px;}
+  #stadiumHomeCard{width:84px;}
+}
+
+/* --- Data backup card (Progression page) --- */
+.apex-data-actions{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 10px;align-items:center;}
+.apex-data-actions .file-import{min-height:40px;}
+.st-ground{fill:#000000;opacity:.45;filter:blur(1px);}
+.st-panel .st-panel-name:before{content:none;}
